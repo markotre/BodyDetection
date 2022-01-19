@@ -1,7 +1,7 @@
 import cv2
 import mediapipe as mp
 import numpy as np
-
+from udp_server import UDP_server
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -35,6 +35,7 @@ def fill_pose(landmarks):
 if __name__ == '__main__':
     # For webcam input:
     cap = cv2.VideoCapture(0)
+    UDPserver = UDP_server()
     with mp_pose.Pose(
             min_detection_confidence=0.5,
             min_tracking_confidence=0.5) as pose, \
@@ -65,7 +66,8 @@ if __name__ == '__main__':
                 results.pose_landmarks,
                 mp_pose.POSE_CONNECTIONS,
                 landmark_drawing_spec=mp_drawing_styles.get_default_pose_landmarks_style())
-            fill_pose(results.pose_landmarks)
+            if results.pose_landmarks:
+                fill_pose(results.pose_landmarks)
 
             if results_h.multi_hand_landmarks:
 
@@ -81,6 +83,7 @@ if __name__ == '__main__':
                     else:
                         fill_righthand(hand_landmarks)
 
+            UDPserver.send_message()
             # Flip the image horizontally for a selfie-view display.
             cv2.imshow('Body + hands', cv2.flip(image, 1))
             if cv2.waitKey(5) & 0xFF == 27:

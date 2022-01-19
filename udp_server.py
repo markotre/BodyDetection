@@ -1,6 +1,7 @@
 import numpy as np
 import socket
 
+
 class UDP_server:
     def __init__(self):
         self.data_to_send = np.zeros((75, 3), dtype=float)
@@ -12,8 +13,5 @@ class UDP_server:
     def set_data(self, data):
         self.data_to_send = data
 
-
     def send_message(self):
-        self.data_socket.sendto(bytes(self.MESSAGE, "utf-8"),(self.UDP_IP,self.UDP_PORT))
-
-
+        self.data_socket.sendto(bytes(self.MESSAGE, "utf-8"), (self.UDP_IP, self.UDP_PORT))
