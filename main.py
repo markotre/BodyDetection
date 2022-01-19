@@ -83,6 +83,7 @@ if __name__ == '__main__':
                     else:
                         fill_righthand(hand_landmarks)
 
+            UDPserver.set_data(all_landmarks.tobytes())
             UDPserver.send_message()
             # Flip the image horizontally for a selfie-view display.
             cv2.imshow('Body + hands', cv2.flip(image, 1))
